@@ -48,6 +48,14 @@ namespace octet {
       enabled = true;
     }
 
+	//Get position (Thanks to Raul)
+	vec2 get_pos(){
+
+		return modelToWorld.row(3).xy();
+
+	}
+	
+
     void render(texture_shader &shader, mat4t &cameraToWorld) {
       // invisible sprite... used for gameplay.
       if (!texture) return;
@@ -189,6 +197,8 @@ namespace octet {
 
     // speed of enemy
     float invader_velocity;
+
+	//Physics
 	float gravity_force;
 
     // sounds
@@ -242,8 +252,13 @@ namespace octet {
 	//gravity
 	void gravity()
 	{
-		gravity_force = -0.02;
+		gravity_force = -0.1;
 		sprites[ship_sprite].translate(0, gravity_force);
+
+		if (sprites[ship_sprite].collides_with(sprites[first_border_sprite]))
+		{
+			sprites[ship_sprite].translate(0, -gravity_force);
+		}
 	}
 
     // use the keyboard to move the ship
@@ -251,11 +266,8 @@ namespace octet {
 	{
 	  const float jump_force = 0.1f;
       const float ship_speed = 0.05f;
-      
-	  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite]))
-	  {
-		  sprites[ship_sprite].translate(0, +0.02);
-	  }
+	  int ship_xpos = sprites[ship_sprite].get_pos().x();
+	  int ship_ypos = sprites[ship_sprite].get_pos().x();
 
 	  // left, right and up arrows
 	  if (is_key_down(key_left) && !is_key_down(key_up)) 
@@ -280,8 +292,8 @@ namespace octet {
 	  
 	  else if (is_key_down(key_up)) 
 	  {
-		  sprites[ship_sprite].translate(0, +jump_force);
-		  
+		  sprites[ship_sprite].translate(0, +jump_force-gravity_force);
+
 		  if (is_key_down(key_right))
 		  {
 			  sprites[ship_sprite].translate(+ship_speed,0);
@@ -301,6 +313,8 @@ namespace octet {
 			    sprites[ship_sprite].translate(+ship_speed, 0);
 			  }
 		  }
+
+
 	  }
     }
 
