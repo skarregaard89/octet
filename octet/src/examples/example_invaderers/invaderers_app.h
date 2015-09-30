@@ -50,9 +50,7 @@ namespace octet {
 
 	//Get position (Thanks to Raul)
 	vec2 get_pos(){
-
 		return modelToWorld.row(3).xy();
-
 	}
 	
 
@@ -200,6 +198,12 @@ namespace octet {
 
 	//Physics
 	float gravity_force;
+	bool hight_limit;
+
+	//Positions of objects
+	//Position of ship
+	float ship_xpos;
+	float ship_ypos;
 
     // sounds
     ALuint whoosh;
@@ -252,12 +256,13 @@ namespace octet {
 	//gravity
 	void gravity()
 	{
-		gravity_force = -0.1;
+		gravity_force = -0.1f;
 		sprites[ship_sprite].translate(0, gravity_force);
 
 		if (sprites[ship_sprite].collides_with(sprites[first_border_sprite]))
 		{
 			sprites[ship_sprite].translate(0, -gravity_force);
+			hight_limit = false;
 		}
 	}
 
@@ -266,8 +271,6 @@ namespace octet {
 	{
 	  const float jump_force = 0.1f;
       const float ship_speed = 0.05f;
-	  int ship_xpos = sprites[ship_sprite].get_pos().x();
-	  int ship_ypos = sprites[ship_sprite].get_pos().x();
 
 	  // left, right and up arrows
 	  if (is_key_down(key_left) && !is_key_down(key_up)) 
@@ -292,7 +295,12 @@ namespace octet {
 	  
 	  else if (is_key_down(key_up)) 
 	  {
-		  sprites[ship_sprite].translate(0, +jump_force-gravity_force);
+		  
+		  if (hight_limit == false)
+		  {
+			  sprites[ship_sprite].translate(0, +jump_force - gravity_force);
+		  }
+		  
 
 		  if (is_key_down(key_right))
 		  {
@@ -314,6 +322,10 @@ namespace octet {
 			  }
 		  }
 
+		  if (ship_ypos > -2)
+		  {
+			  hight_limit = true;
+		  }
 
 	  }
     }
@@ -543,12 +555,17 @@ namespace octet {
       game_over = false;
       score = 0;
     }
-
+	
     // called every frame to move things
     void simulate() {
       if (game_over) {
         return;
       }
+	  ship_xpos = sprites[ship_sprite].get_pos().x();
+	  ship_ypos = sprites[ship_sprite].get_pos().y();
+
+	  printf("%f\n", ship_ypos);
+	  printf("%d\n", hight_limit);
 
 	  gravity();
 
