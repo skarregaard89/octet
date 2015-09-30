@@ -242,7 +242,7 @@ namespace octet {
 	//gravity
 	void gravity()
 	{
-		gravity_force = -0.0;
+		gravity_force = -0.02;
 		sprites[ship_sprite].translate(0, gravity_force);
 	}
 
@@ -251,23 +251,33 @@ namespace octet {
 	{
 	  const float jump_force = 0.1f;
       const float ship_speed = 0.05f;
-      // left and right arrows
+      
+	  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite]))
+	  {
+		  sprites[ship_sprite].translate(0, +0.02);
+	  }
+
+	  // left, right and up arrows
 	  if (is_key_down(key_left) && !is_key_down(key_up)) 
 	  {
         sprites[ship_sprite].translate(-ship_speed, 0);
-        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+2])) 
+       
+		if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+2])) 
 		{
           sprites[ship_sprite].translate(+ship_speed, 0);
         }
 	  }
+	  
 	  else if (is_key_down(key_right) && !is_key_down(key_up)) 
 	  {
         sprites[ship_sprite].translate(+ship_speed, 0);
-        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+3])) 
+        
+		if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+3])) 
 		{
           sprites[ship_sprite].translate(-ship_speed, 0);
         }
       }
+	  
 	  else if (is_key_down(key_up)) 
 	  {
 		  sprites[ship_sprite].translate(0, +jump_force);
