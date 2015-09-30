@@ -189,6 +189,7 @@ namespace octet {
 
     // speed of enemy
     float invader_velocity;
+	float gravity_force;
 
     // sounds
     ALuint whoosh;
@@ -241,45 +242,54 @@ namespace octet {
 	//gravity
 	void gravity()
 	{
-		sprites[ship_sprite].translate(0, -0.02);
+		gravity_force = -0.0;
+		sprites[ship_sprite].translate(0, gravity_force);
 	}
 
     // use the keyboard to move the ship
-    void move_ship() {
+    void move_ship() 
+	{
 	  const float jump_force = 0.1f;
       const float ship_speed = 0.05f;
       // left and right arrows
-	  if (is_key_down(key_left) && !is_key_down(key_up)) {
+	  if (is_key_down(key_left) && !is_key_down(key_up)) 
+	  {
         sprites[ship_sprite].translate(-ship_speed, 0);
-        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+2])) {
+        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+2])) 
+		{
           sprites[ship_sprite].translate(+ship_speed, 0);
         }
 	  }
-	  else if (is_key_down(key_right) && !is_key_down(key_up)) {
+	  else if (is_key_down(key_right) && !is_key_down(key_up)) 
+	  {
         sprites[ship_sprite].translate(+ship_speed, 0);
-        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+3])) {
+        if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+3])) 
+		{
           sprites[ship_sprite].translate(-ship_speed, 0);
         }
       }
-	  else if (is_key_down(key_up) && !(is_key_down(key_right) || is_key_down(key_left))) {
+	  else if (is_key_down(key_up)) 
+	  {
 		  sprites[ship_sprite].translate(0, +jump_force);
-		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) {
-			  sprites[ship_sprite].translate(-ship_speed, 0);
-		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 2])) {
-			  sprites[ship_sprite].translate(+ship_speed, 0);
+		  
+		  if (is_key_down(key_right))
+		  {
+			  sprites[ship_sprite].translate(+ship_speed,0);
+			  
+			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) 
+			  {
+				  sprites[ship_sprite].translate(-ship_speed, 0);
 			  }
 		  }
-	  }
-	  else if (is_key_down(key_up) && is_key_down(key_right)) {
-		  sprites[ship_sprite].translate(+ship_speed, +jump_force);
-		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) {
+		  
+		  if (is_key_down(key_left))
+		  {
 			  sprites[ship_sprite].translate(-ship_speed, 0);
-		  }
-	  }
-	  else if (is_key_down(key_up) && is_key_down(key_left)) {
-		  sprites[ship_sprite].translate(-ship_speed, +jump_force);
-		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 2])) {
-			  sprites[ship_sprite].translate(+ship_speed, 0);
+			  
+			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 2])) 
+			  {
+			    sprites[ship_sprite].translate(+ship_speed, 0);
+			  }
 		  }
 	  }
     }
