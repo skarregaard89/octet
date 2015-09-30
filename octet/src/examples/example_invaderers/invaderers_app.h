@@ -103,6 +103,8 @@ namespace octet {
       modelToWorld.translate(x, y, 0);
     }
 
+
+
     // position the object relative to another.
     void set_relative(sprite &rhs, float x, float y) {
       modelToWorld = rhs.modelToWorld;
@@ -236,21 +238,39 @@ namespace octet {
       }
     }
 
+	//gravity
+	void gravity()
+	{
+		sprites[ship_sprite].translate(0, -0.02);
+	}
     // use the keyboard to move the ship
     void move_ship() {
       const float ship_speed = 0.05f;
       // left and right arrows
-      if (is_key_down(key_left)) {
+	  if (is_key_down(key_left) && !is_key_down(key_up)) {
         sprites[ship_sprite].translate(-ship_speed, 0);
         if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+2])) {
           sprites[ship_sprite].translate(+ship_speed, 0);
         }
-      } else if (is_key_down(key_right)) {
+	  }
+	  else if (is_key_down(key_right) && !is_key_down(key_up)) {
         sprites[ship_sprite].translate(+ship_speed, 0);
         if (sprites[ship_sprite].collides_with(sprites[first_border_sprite+3])) {
           sprites[ship_sprite].translate(-ship_speed, 0);
         }
       }
+	  else if (is_key_down(key_up)) {
+		  sprites[ship_sprite].translate(0, +ship_speed);
+		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) {
+			  sprites[ship_sprite].translate(-ship_speed, 0);
+		  }
+	  }
+	  else if (is_key_down(key_up) && is_key_down(key_right)) {
+		  sprites[ship_sprite].translate(+ship_speed, +ship_speed);
+		  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) {
+			  sprites[ship_sprite].translate(-ship_speed, 0);
+		  }
+	  }
     }
 
     // fire button (space)
@@ -484,6 +504,8 @@ namespace octet {
       if (game_over) {
         return;
       }
+
+	  gravity();
 
       move_ship();
 
