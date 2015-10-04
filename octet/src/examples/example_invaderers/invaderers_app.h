@@ -16,6 +16,12 @@
 //   Texture loaded from GIF file
 //   Audio
 //
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <vector>
+using namespace std;
 
 namespace octet {
   class sprite {
@@ -375,80 +381,125 @@ namespace octet {
             return;
           }
         }
-      }
-    }
+	  }
+	}
 
-    // animate the missiles
-    void move_missiles() {
-      const float missile_speed = 0.3f;
-      for (int i = 0; i != num_missiles; ++i) {
-        sprite &missile = sprites[first_missile_sprite+i];
-        if (missile.is_enabled()) {
-          missile.translate(0, missile_speed);
-          for (int j = 0; j != num_invaderers; ++j) {
-            sprite &invaderer = sprites[first_invaderer_sprite+j];
-            if (invaderer.is_enabled() && missile.collides_with(invaderer)) {
-              invaderer.is_enabled() = false;
-              invaderer.translate(20, 0);
-              missile.is_enabled() = false;
-              missile.translate(20, 0);
-              on_hit_invaderer();
+	// animate the missiles
+	void move_missiles() {
+		const float missile_speed = 0.3f;
+		for (int i = 0; i != num_missiles; ++i) {
+			sprite &missile = sprites[first_missile_sprite + i];
+			if (missile.is_enabled()) {
+				missile.translate(0, missile_speed);
+				for (int j = 0; j != num_invaderers; ++j) {
+					sprite &invaderer = sprites[first_invaderer_sprite + j];
+					if (invaderer.is_enabled() && missile.collides_with(invaderer)) {
+						invaderer.is_enabled() = false;
+						invaderer.translate(20, 0);
+						missile.is_enabled() = false;
+						missile.translate(20, 0);
+						on_hit_invaderer();
 
-              goto next_missile;
-            }
-          }
-          if (missile.collides_with(sprites[first_border_sprite+1])) {
-            missile.is_enabled() = false;
-            missile.translate(20, 0);
-          }
-        }
-      next_missile:;
-      }
-    }
+						goto next_missile;
+					}
+				}
+				if (missile.collides_with(sprites[first_border_sprite + 1])) {
+					missile.is_enabled() = false;
+					missile.translate(20, 0);
+				}
+			}
+		next_missile:;
+		}
+	}
 
-    // animate the bombs
-    void move_bombs() {
-      const float bomb_speed = 0.2f;
-      for (int i = 0; i != num_bombs; ++i) {
-        sprite &bomb = sprites[first_bomb_sprite+i];
-        if (bomb.is_enabled()) {
-          bomb.translate(0, -bomb_speed);
-          if (bomb.collides_with(sprites[ship_sprite])) {
-            bomb.is_enabled() = false;
-            bomb.translate(20, 0);
-            bombs_disabled = 50;
-            on_hit_ship();
-            goto next_bomb;
-          }
-          if (bomb.collides_with(sprites[first_border_sprite+0])) {
-            bomb.is_enabled() = false;
-            bomb.translate(20, 0);
-          }
-        }
-      next_bomb:;
-      }
-    }
+	// animate the bombs
+	void move_bombs() {
+		const float bomb_speed = 0.2f;
+		for (int i = 0; i != num_bombs; ++i) {
+			sprite &bomb = sprites[first_bomb_sprite + i];
+			if (bomb.is_enabled()) {
+				bomb.translate(0, -bomb_speed);
+				if (bomb.collides_with(sprites[ship_sprite])) {
+					bomb.is_enabled() = false;
+					bomb.translate(20, 0);
+					bombs_disabled = 50;
+					on_hit_ship();
+					goto next_bomb;
+				}
+				if (bomb.collides_with(sprites[first_border_sprite + 0])) {
+					bomb.is_enabled() = false;
+					bomb.translate(20, 0);
+				}
+			}
+		next_bomb:;
+		}
+	}
 
-    // move the array of enemies
-    void move_invaders(float dx, float dy) {
-      for (int j = 0; j != num_invaderers; ++j) {
-        sprite &invaderer = sprites[first_invaderer_sprite+j];
-        if (invaderer.is_enabled()) {
-          invaderer.translate(dx, dy);
-        }
-      }
-    }
+	// move the array of enemies
+	void move_invaders(float dx, float dy) {
+		for (int j = 0; j != num_invaderers; ++j) {
+			sprite &invaderer = sprites[first_invaderer_sprite + j];
+			if (invaderer.is_enabled()) {
+				invaderer.translate(dx, dy);
+			}
+		}
+	}
 
-    // check if any invaders hit the sides.
-    bool invaders_collide(sprite &border) {
-      for (int j = 0; j != num_invaderers; ++j) {
-        sprite &invaderer = sprites[first_invaderer_sprite+j];
-        if (invaderer.is_enabled() && invaderer.collides_with(border)) {
-          return true;
-        }
-      }
-      return false;
-    }
+	// check if any invaders hit the sides.
+	bool invaders_collide(sprite &border) {
+		for (int j = 0; j != num_invaderers; ++j) {
+			sprite &invaderer = sprites[first_invaderer_sprite + j];
+			if (invaderer.is_enabled() && invaderer.collides_with(border)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// REad CSV-file, ref:http://www.gamedev.net/topic/444193-c-how-to-load-in-a-csv-file/
+	void readCSV(std::istream &input, std::vector < std::vector <std::string> > &output)
+	{
+		std::string csvLine;
+
+		while (std::getline(input, csvLine))
+		{
+			std::istringstream csvStream(csvLine);
+			std::vector<std::string> csvColum;
+			std::string csvElement;
+
+			while (getline(csvStream, csvElement, ','))
+			{
+				csvColum.push_back(csvElement);
+			}
+			output.push_back(csvColum);
+		}
+	}
+
+	//output CSV file
+	int outputCSV()
+	{
+		std::fstream file("assets/invaderers/myCSV.txt", ios::in);
+
+		if (!file.is_open())
+			{
+				std::cout << "Cannot open file. Err = " << errno << endl;
+				return 1;
+			}
+
+		typedef std::vector <std::vector<std::string>>csvVector;
+		csvVector csvData;
+
+		readCSV(file, csvData);
+
+		for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
+		{
+			for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
+			{
+				std::cout << *j << ",";
+			}
+			std::cout << "\n";
+		}
+	}
 
 
     void draw_text(texture_shader &shader, float x, float y, float scale, const char *text) {
@@ -492,6 +543,8 @@ namespace octet {
 
     // this is called once OpenGL is initialized
     void app_init() {
+
+		outputCSV();
       // set up the shader
       texture_shader_.init();
 
@@ -564,8 +617,8 @@ namespace octet {
 	  ship_xpos = sprites[ship_sprite].get_pos().x();
 	  ship_ypos = sprites[ship_sprite].get_pos().y();
 
-	  printf("%f\n", ship_ypos);
-	  printf("%d\n", hight_limit);
+	 // printf("%f\n", ship_ypos);
+	  //printf("%d\n", hight_limit);
 
 	  gravity();
 
@@ -591,7 +644,7 @@ namespace octet {
     // this is called to draw the world
     void draw_world(int x, int y, int w, int h) {
       simulate();
-
+	  
       // set a viewport - includes whole window area
       glViewport(x, y, w, h);
 
