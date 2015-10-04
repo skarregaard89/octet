@@ -478,7 +478,8 @@ namespace octet {
 	//output CSV file
 	int outputCSV()
 	{
-		std::fstream file("assets/invaderers/myCSV.txt", ios::in);
+		// Trouble shooting of path error by Jean-Pascal Evette
+		std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
 
 		if (!file.is_open())
 			{
