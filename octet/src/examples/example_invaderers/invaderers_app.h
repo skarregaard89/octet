@@ -475,32 +475,46 @@ namespace octet {
 		}
 	}
 
-	//output CSV file
-/*	int outputCSV()
+	//output CSV file as invaders
+	int outputCSV()
 	{
 		// Trouble shooting of path done by Jean-Pascal Evette, Thanks
 		std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
 
-		if (!file.is_open())
-			{
-				std::cout << "Cannot open file. Err = " << errno << endl;
-				return 1;
-			}
+	  if (!file.is_open())
+	  {
+		  std::cout << "Cannot open file. Err = " << errno << endl;
+		  return 1;
+	  }
 
-		typedef std::vector <std::vector<std::string>>csvVector;
-		csvVector csvData;
-
-		readCSV(file, csvData);
-
-		for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
-		{
-			for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
-			{
-				std::cout << *j << ",";
-			}
-			std::cout << "\n";
-		}
-	}*/
+	  typedef std::vector <std::vector<std::string>>csvVector;
+	  csvVector csvData;
+	  readCSV(file, csvData);
+	 
+	  int k = 0; //for row counting
+	  int p = 0; //for sprite counting
+	  int l = 0; //for columns counting
+	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
+	  {
+		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
+		  {
+			  std::cout << *j << ",";
+			  if (*j == "1")
+			  {
+				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
+				  assert(first_invaderer_sprite + p);
+				  sprites[first_invaderer_sprite + p].init(invaderer, ((float)l-1 * 0.5f) * 0.5f, 2.50f - ((float)k * 0.5f), 0.25f, 0.25f);
+				  std::cout << "I am here";
+				  p++;
+				  l++; 
+			  }
+		  }
+		  l = 0;
+		  k++;
+		  std::cout << "\n";
+		  std::cout << k;
+	  }
+	}
 
 
     void draw_text(texture_shader &shader, float x, float y, float scale, const char *text) {
@@ -562,38 +576,7 @@ namespace octet {
       sprites[game_over_sprite].init(GameOver, 20, 0, 3, 1.5f);
 
 
-	  std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
-
-	  if (!file.is_open())
-	  {
-		  std::cout << "Cannot open file. Err = " << errno << endl;
-		  //return 1;
-	  }
-
-	  typedef std::vector <std::vector<std::string>>csvVector;
-	  csvVector csvData;
-
-	  readCSV(file, csvData);
-
-	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
-	  {
-		  int k = 0;
-		  int p = 0;
-		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
-		  {
-			  std::cout << *j << ",";
-			  if (*j == "1")
-			  {
-				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
-				  assert(first_invaderer_sprite + p);
-				  sprites[first_invaderer_sprite + p].init(invaderer, ((float)p - num_cols * 0.5f) * 0.5f, 2.50f - ((float)k * 0.5f), 0.25f, 0.25f);
-				  std::cout << "I am here";
-				  p++;
-				  k++;
-			  }
-		  }
-		  std::cout << "\n";
-	  }
+	  outputCSV();
 
 
      /* GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
