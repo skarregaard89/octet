@@ -476,9 +476,9 @@ namespace octet {
 	}
 
 	//output CSV file
-	int outputCSV()
+/*	int outputCSV()
 	{
-		// Trouble shooting of path error by Jean-Pascal Evette
+		// Trouble shooting of path done by Jean-Pascal Evette, Thanks
 		std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
 
 		if (!file.is_open())
@@ -500,7 +500,7 @@ namespace octet {
 			}
 			std::cout << "\n";
 		}
-	}
+	}*/
 
 
     void draw_text(texture_shader &shader, float x, float y, float scale, const char *text) {
@@ -545,7 +545,7 @@ namespace octet {
     // this is called once OpenGL is initialized
     void app_init() {
 
-		outputCSV();
+		//outputCSV();
       // set up the shader
       texture_shader_.init();
 
@@ -561,15 +561,51 @@ namespace octet {
       GLuint GameOver = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/GameOver.gif");
       sprites[game_over_sprite].init(GameOver, 20, 0, 3, 1.5f);
 
-      GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
-      for (int j = 0; j != num_rows; ++j) {
-        for (int i = 0; i != num_cols; ++i) {
+
+	  std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
+
+	  if (!file.is_open())
+	  {
+		  std::cout << "Cannot open file. Err = " << errno << endl;
+		  //return 1;
+	  }
+
+	  typedef std::vector <std::vector<std::string>>csvVector;
+	  csvVector csvData;
+
+	  readCSV(file, csvData);
+
+	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
+	  {
+		  int k = 0;
+		  int p = 0;
+		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
+		  {
+			  std::cout << *j << ",";
+			  if (*j == "1")
+			  {
+				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
+				  assert(first_invaderer_sprite + p);
+				  sprites[first_invaderer_sprite + p].init(invaderer, ((float)p - num_cols * 0.5f) * 0.5f, 2.50f - ((float)k * 0.5f), 0.25f, 0.25f);
+				  std::cout << "I am here";
+				  p++;
+				  k++;
+			  }
+		  }
+		  std::cout << "\n";
+	  }
+
+
+     /* GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
+      for (int j = 0; j != num_rows; ++j) 
+	  {
+        for (int i = 0; i != num_cols; ++i) 
+		{
           assert(first_invaderer_sprite + i + j*num_cols <= last_invaderer_sprite);
           sprites[first_invaderer_sprite + i + j*num_cols].init(
-            invaderer, ((float)i - num_cols * 0.5f) * 0.5f, 2.50f - ((float)j * 0.5f), 0.25f, 0.25f
-          );
+            invaderer, ((float)i - num_cols * 0.5f) * 0.5f, 2.50f - ((float)j * 0.5f), 0.25f, 0.25f);
         }
-      }
+      }*/
 
       // set the border to white for clarity
       GLuint white = resource_dict::get_texture_handle(GL_RGB, "#ffffff");
