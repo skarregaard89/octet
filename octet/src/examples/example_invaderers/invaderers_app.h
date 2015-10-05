@@ -490,7 +490,7 @@ namespace octet {
 	int outputCSV()
 	{
 		int minCSVNum = 1;
-		int maxCSVNum = 3;
+		int maxCSVNum = 6;
 		srand(time(NULL));
 		int ranNum = (rand() % (maxCSVNum - minCSVNum)) + minCSVNum;
 		cout << ranNum;
@@ -521,7 +521,7 @@ namespace octet {
 			  {
 				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
 				  assert(first_invaderer_sprite + spriteNum);
-				  sprites[first_invaderer_sprite + spriteNum].init(invaderer, ((float)col - 1 * 0.5f) * 0.5f, 2.50f - ((float)row * 0.5f), 0.25f, 0.25f);
+				  sprites[first_invaderer_sprite + spriteNum].init(invaderer, ((float)col - 1 * 5.0f) * 0.5f, 2.50f - ((float)row * 0.5f), 0.25f, 0.25f);
 				  spriteNum++;
 			  }
 			  col++;
