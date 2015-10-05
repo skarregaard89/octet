@@ -21,6 +21,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 namespace octet {
@@ -456,7 +458,16 @@ namespace octet {
 		return false;
 	}
 
-	// REad CSV-file, ref:http://www.gamedev.net/topic/444193-c-how-to-load-in-a-csv-file/
+
+	//converting ints to strings, ref: http://faq.cprogramming.com/cgi-bin/smartfaq.cgi?answer=1045689663&id=1043284385
+	std::string IntToString(int number)
+	{
+		std::ostringstream oss;
+		oss << number;
+		return oss.str();
+	}
+
+	// Read CSV-file, ref:http://www.gamedev.net/topic/444193-c-how-to-load-in-a-csv-file/
 	void readCSV(std::istream &input, std::vector < std::vector <std::string> > &output)
 	{
 		std::string csvLine;
@@ -478,8 +489,15 @@ namespace octet {
 	//output CSV file as invaders
 	int outputCSV()
 	{
+		int minCSVNum = 1;
+		int maxCSVNum = 3;
+		srand(time(NULL));
+		int ranNum = (rand() % (maxCSVNum - minCSVNum)) + minCSVNum;
+		cout << ranNum;
+		std::string ranString = IntToString(ranNum);
+
 		// Trouble shooting of path done by Jean-Pascal Evette, Thanks
-		std::fstream file("../../../assets/invaderers/myCSV.txt", ios::in);
+		std::fstream file("../../../assets/invaderers/myCSV"+ranString+".txt", ios::in);
 
 	  if (!file.is_open())
 	  {
@@ -491,9 +509,9 @@ namespace octet {
 	  csvVector csvData;
 	  readCSV(file, csvData);
 	 
-	  int k = 0; //for row counting
-	  int p = 0; //for sprite counting
-	  int l = 0; //for columns counting
+	  int row = 0;
+	  int spriteNum = 0; //for sprite counting
+	  int col = 0; 
 	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
 	  {
 		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
@@ -502,17 +520,15 @@ namespace octet {
 			  if (*j == "1")
 			  {
 				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
-				  assert(first_invaderer_sprite + p);
-				  sprites[first_invaderer_sprite + p].init(invaderer, ((float)l-1 * 0.5f) * 0.5f, 2.50f - ((float)k * 0.5f), 0.25f, 0.25f);
-				  std::cout << "I am here";
-				  p++;
-				  l++; 
+				  assert(first_invaderer_sprite + spriteNum);
+				  sprites[first_invaderer_sprite + spriteNum].init(invaderer, ((float)col - 1 * 0.5f) * 0.5f, 2.50f - ((float)row * 0.5f), 0.25f, 0.25f);
+				  spriteNum++;
 			  }
+			  col++;
 		  }
-		  l = 0;
-		  k++;
+		  col = 0;
+		  row++;
 		  std::cout << "\n";
-		  std::cout << k;
 	  }
 	}
 
