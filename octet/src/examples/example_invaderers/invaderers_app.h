@@ -539,6 +539,8 @@ namespace octet {
       modelToWorld.translate(x, y, 0);
       modelToWorld.scale(scale, scale, 1);
       mat4t modelToProjection = mat4t::build_projection_matrix(modelToWorld, cameraToWorld);
+	  
+	  
 
       /*mat4t tmp;
       glLoadIdentity();
@@ -575,7 +577,6 @@ namespace octet {
     // this is called once OpenGL is initialized
     void app_init() {
 
-		//outputCSV();
       // set up the shader
       texture_shader_.init();
 
@@ -644,12 +645,15 @@ namespace octet {
       game_over = false;
       score = 0;
     }
+
+
 	
     // called every frame to move things
     void simulate() {
       if (game_over) {
         return;
       }
+
 	  ship_xpos = sprites[ship_sprite].get_pos().x();
 	  ship_ypos = sprites[ship_sprite].get_pos().y();
 
