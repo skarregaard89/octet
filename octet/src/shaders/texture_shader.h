@@ -18,11 +18,12 @@ namespace octet { namespace shaders {
   public:
     void init() {
       // this is the vertex shader.
-      // it is called for each corner of each triangle
+      // it is called for each corner of each triangle	
       // it inputs pos and uv from each corner
       // it outputs gl_Position and uv_ to the rasterizer
       const char vertex_shader[] = SHADER_STR(
         varying vec2 uv_;
+		
 
         attribute vec4 pos;
         attribute vec2 uv;
@@ -41,9 +42,9 @@ namespace octet { namespace shaders {
         uniform sampler2D sampler;
         void main() 
 		{ 
-
 			vec4 cTex = texture2D(sampler, uv_);
-			gl_FragColor = vec4(cTex.r, cTex.g, cTex.b, cTex.a);
+			vec4 color = vec4(1,0,0,1);
+			gl_FragColor = cTex * color;
 		}
       );
     
