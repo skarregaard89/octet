@@ -41,6 +41,8 @@ namespace octet {
 
     // true if this sprite is enabled.
     bool enabled;
+
+	float alpha = 1;
   public:
     sprite() {
       texture = 0;
@@ -77,7 +79,7 @@ namespace octet {
       // use "old skool" rendering
       //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
       //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      shader.render(modelToProjection, 0);
+      shader.render(modelToProjection, 0, alpha);
 
       // this is an array of the positions of the corners of the sprite in 3D
       // a straight "float" here means this array is being generated here at runtime.
@@ -150,6 +152,15 @@ namespace octet {
     bool &is_enabled() {
       return enabled;
     }
+
+	float& get_alpha() {
+		return alpha;
+	}
+	
+	void set_alpha(float newAlpha){
+		alpha = newAlpha;
+	}
+
   };
 
   class invaderers_app : public octet::app {
@@ -486,6 +497,8 @@ namespace octet {
 		}
 	}
 
+	
+
 	//output CSV file as invaders
 	int outputCSV()
 	{
@@ -532,6 +545,27 @@ namespace octet {
 	  }
 	}
 
+	int invisibleNum()
+	{
+		int minNum = 1;
+		int maxNum = 10;
+		int number = (rand() % (maxNum - minNum)) + minNum;
+		return number;
+	}
+
+	void invisibleInvaders()
+	{
+		//int minNum = 1;
+		//int maxNum = 10;
+		//int isVisibleNum = (rand() % (maxNum - minNum)) + minNum;
+		std::cout<<invisibleNum();
+
+		if (invisibleNum() <5)
+		{
+			for (int i = 0; i < last_invaderer_sprite; i++)
+				sprites[first_invaderer_sprite + i].set_alpha(0.0f);
+		}
+	}
 
     void draw_text(texture_shader &shader, float x, float y, float scale, const char *text) {
       mat4t modelToWorld;
@@ -558,7 +592,7 @@ namespace octet {
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, font_texture);
 
-      shader.render(modelToProjection, 0);
+      shader.render(modelToProjection, 0, 1.0f);
 
       glVertexAttribPointer(attribute_pos, 3, GL_FLOAT, GL_FALSE, sizeof(bitmap_font::vertex), (void*)&vertices[0].x );
       glEnableVertexAttribArray(attribute_pos);
@@ -577,8 +611,10 @@ namespace octet {
     // this is called once OpenGL is initialized
     void app_init() {
 
+	
       // set up the shader
       texture_shader_.init();
+	 
 
       // set up the matrices with a camera 5 units from the origin
       cameraToWorld.loadIdentity();
@@ -592,20 +628,14 @@ namespace octet {
       GLuint GameOver = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/GameOver.gif");
       sprites[game_over_sprite].init(GameOver, 20, 0, 3, 1.5f);
 
+	  
 
+	  invisibleInvaders();
 	  outputCSV();
 
-
-     /* GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
-      for (int j = 0; j != num_rows; ++j) 
-	  {
-        for (int i = 0; i != num_cols; ++i) 
-		{
-          assert(first_invaderer_sprite + i + j*num_cols <= last_invaderer_sprite);
-          sprites[first_invaderer_sprite + i + j*num_cols].init(
-            invaderer, ((float)i - num_cols * 0.5f) * 0.5f, 2.50f - ((float)j * 0.5f), 0.25f, 0.25f);
-        }
-      }*/
+	  
+	  
+	  
 
       // set the border to white for clarity
       GLuint white = resource_dict::get_texture_handle(GL_RGB, "#ffffff");
@@ -646,7 +676,7 @@ namespace octet {
       score = 0;
     }
 
-
+	
 	
     // called every frame to move things
     void simulate() {
@@ -654,6 +684,7 @@ namespace octet {
         return;
       }
 
+	  //Returns the position of the space ship
 	  ship_xpos = sprites[ship_sprite].get_pos().x();
 	  ship_ypos = sprites[ship_sprite].get_pos().y();
 
@@ -674,6 +705,7 @@ namespace octet {
 
       move_invaders(invader_velocity, 0);
 
+	  invisibleNum();
       sprite &border = sprites[first_border_sprite+(invader_velocity < 0 ? 2 : 3)];
       if (invaders_collide(border)) {
         invader_velocity = -invader_velocity;

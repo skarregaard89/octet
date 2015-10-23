@@ -15,6 +15,10 @@ namespace octet { namespace shaders {
 
     // index for texture sampler
     GLuint samplerIndex_;
+
+	// index for texture alpha value 
+	GLint alphaIndex_;
+
   public:
     void init() {
       // this is the vertex shader.
@@ -40,11 +44,13 @@ namespace octet { namespace shaders {
       const char fragment_shader[] = SHADER_STR(
         varying vec2 uv_;
         uniform sampler2D sampler;
+		uniform float alpha;
         void main() 
 		{ 
 			vec4 cTex = texture2D(sampler, uv_);
-			vec4 color = vec4(1,0,0,1);
+			vec4 color = vec4(1,0,0,alpha);
 			gl_FragColor = cTex * color;
+			//gl_FragColor = vec4(alpha, alpha, alpha, 1);
 		}
       );
     
@@ -55,15 +61,20 @@ namespace octet { namespace shaders {
       // extract the indices of the uniforms to use later
       modelToProjectionIndex_ = glGetUniformLocation(program(), "modelToProjection");
       samplerIndex_ = glGetUniformLocation(program(), "sampler");
+	  alphaIndex_ = glGetUniformLocation(program(), "alpha");
     }
 
-    void render(const mat4t &modelToProjection, int sampler) {
+    void render(const mat4t &modelToProjection, int sampler, int alpha) {
       // tell openGL to use the program
       shader::render();
 
       // customize the program with uniforms
       glUniform1i(samplerIndex_, sampler);
       glUniformMatrix4fv(modelToProjectionIndex_, 1, GL_FALSE, modelToProjection.get());
-    }
+	  glUniform1f(alphaIndex_, alpha);
+    
+	  
+
+	}
   };
 }}
