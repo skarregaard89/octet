@@ -42,8 +42,11 @@ namespace octet {
     // true if this sprite is enabled.
     bool enabled;
 
+	//Variable containing alpha value
 	float alpha = 1;
-  public:
+  
+  
+ public:
     sprite() {
       texture = 0;
       enabled = true;
@@ -79,7 +82,7 @@ namespace octet {
       // use "old skool" rendering
       //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
       //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      shader.render(modelToProjection, 0, alpha);
+      shader.render(modelToProjection, 0, alpha); //setting the shader alpha value to the value in the alpha variable
 
       // this is an array of the positions of the corners of the sprite in 3D
       // a straight "float" here means this array is being generated here at runtime.
@@ -167,10 +170,10 @@ namespace octet {
     // Matrix to transform points in our camera space to the world.
     // This lets us move our camera
     mat4t cameraToWorld;
-
+	
     // shader to draw a textured triangle
     texture_shader texture_shader_;
-
+	
     enum {
       num_sound_sources = 8,
       num_rows = 5,
@@ -522,9 +525,10 @@ namespace octet {
 	  csvVector csvData;
 	  readCSV(file, csvData);
 	 
+	  //Keeping track of the invaders
 	  int row = 0;
-	  int spriteNum = 0; //for sprite counting
-	  int col = 0; 
+	  int col = 0;
+	  int spriteNum = 0; 
 	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
 	  {
 		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
@@ -545,26 +549,27 @@ namespace octet {
 	  }
 	}
 
-	int invisibleNum()
+	//calculates when invaders should be invisible
+	void invisibleInvaders()
 	{
 		int minNum = 1;
 		int maxNum = 10;
-		int number = (rand() % (maxNum - minNum)) + minNum;
-		return number;
-	}
+		srand(time(NULL));
+		int isVisibleNum = (rand() % (maxNum - minNum)) + minNum;
+		std::cout<<isVisibleNum;
 
-	void invisibleInvaders()
-	{
-		//int minNum = 1;
-		//int maxNum = 10;
-		//int isVisibleNum = (rand() % (maxNum - minNum)) + minNum;
-		std::cout<<invisibleNum();
-
-		if (invisibleNum() <5)
+		if (isVisibleNum <5)
 		{
 			for (int i = 0; i < last_invaderer_sprite; i++)
 				sprites[first_invaderer_sprite + i].set_alpha(0.0f);
 		}
+		else 
+		{
+			for (int i = 0; i < last_invaderer_sprite; i++)
+				sprites[first_invaderer_sprite + i].set_alpha(1.0f);
+		}
+			
+	
 	}
 
     void draw_text(texture_shader &shader, float x, float y, float scale, const char *text) {
@@ -629,11 +634,8 @@ namespace octet {
       sprites[game_over_sprite].init(GameOver, 20, 0, 3, 1.5f);
 
 	  
-
-	  invisibleInvaders();
 	  outputCSV();
 
-	  
 	  
 	  
 
@@ -705,7 +707,8 @@ namespace octet {
 
       move_invaders(invader_velocity, 0);
 
-	  invisibleNum();
+	  invisibleInvaders();
+
       sprite &border = sprites[first_border_sprite+(invader_velocity < 0 ? 2 : 3)];
       if (invaders_collide(border)) {
         invader_velocity = -invader_velocity;
