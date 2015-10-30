@@ -46,7 +46,8 @@ in that specific frame.
 A "vec2 get_pos()" function was created in the sprite class. This function returns the
 position of an object/sprite. The "get_pos()" function is called inside the game loop "void 
 simulate()" function in the "invaders_app" class. It is called to get both the x and y 
-position of the spaceship each frame.
+position of the spaceship each frame. The two positions are stored in variable "ship_xpos" 
+and "ship_ypos" respectivly. 
 
 
 

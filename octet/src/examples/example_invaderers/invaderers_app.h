@@ -159,63 +159,66 @@ namespace octet {
   };
 
   class invaderers_app : public octet::app {
-    // Matrix to transform points in our camera space to the world.
-    // This lets us move our camera
-    mat4t cameraToWorld;
-	
-    // shader to draw a textured triangle
-    texture_shader texture_shader_;
-	
-    enum {
-      num_sound_sources = 8,
-      num_missiles = 2,
-      num_bombs = 2,
-      num_borders = 4,
-      num_invaderers = 50,
+	  // Matrix to transform points in our camera space to the world.
+	  // This lets us move our camera
+	  mat4t cameraToWorld;
 
-      // sprite definitions
-      ship_sprite = 0,
-      game_over_sprite,
+	  // shader to draw a textured triangle
+	  texture_shader texture_shader_;
 
-      first_invaderer_sprite,
-      last_invaderer_sprite = first_invaderer_sprite + num_invaderers - 1,
+	  enum {
+		  num_sound_sources = 8,
+		  num_missiles = 2,
+		  num_bombs = 2,
+		  num_borders = 4,
+		  num_invaderers = 50,
 
-      first_missile_sprite,
-      last_missile_sprite = first_missile_sprite + num_missiles - 1,
+		  // sprite definitions
+		  ship_sprite = 0,
+		  game_over_sprite,
 
-      first_bomb_sprite,
-      last_bomb_sprite = first_bomb_sprite + num_bombs - 1,
+		  first_invaderer_sprite,
+		  last_invaderer_sprite = first_invaderer_sprite + num_invaderers - 1,
 
-      first_border_sprite,
-      last_border_sprite = first_border_sprite + num_borders - 1,
+		  first_missile_sprite,
+		  last_missile_sprite = first_missile_sprite + num_missiles - 1,
 
-      num_sprites,
+		  first_bomb_sprite,
+		  last_bomb_sprite = first_bomb_sprite + num_bombs - 1,
 
-    };
+		  first_border_sprite,
+		  last_border_sprite = first_border_sprite + num_borders - 1,
 
-    // timers for missiles and bombs
-    int missiles_disabled;
-    int bombs_disabled;
+		  num_sprites,
 
-    // accounting for bad guys
-	int numberOfInvadersSpawned; //Counting when spawning invader from CSV file
-    int num_lives;
+	  };
 
-    // game state
-    bool game_over;
-    int score;
+	  // timers for missiles and bombs
+	  int missiles_disabled;
+	  int bombs_disabled;
 
-    // speed of enemy
-    float invader_velocity;
+	  // accounting for bad guys
+	  int numberOfInvadersSpawned; //Counting when spawning invader from CSV file
+	  int num_lives;
 
-	//Physics (gravity)
-	float gravity_force;
-	bool hight_limit;
+	  // game state
+	  bool game_over;
+	  int score;
 
-	//Positions of objects
-	//Position of ship
-	float ship_xpos;
-	float ship_ypos;
+	  // speed of enemy
+	  float invader_velocity;
+
+	  //Physics (gravity)
+	  float gravity_force;
+	  bool hight_limit;
+
+	  //Position of ship
+	  struct
+	  {
+		  float x;
+		  float y;
+
+	  }ship_position;
 
     // sounds
     ALuint whoosh;
@@ -306,36 +309,36 @@ namespace octet {
         }
       }
 	  
-	  else if (is_key_down(key_up)) 
+	  else if (is_key_down(key_up))
 	  {
-		  
+
 		  if (hight_limit == false)
 		  {
 			  sprites[ship_sprite].translate(0, +jump_force - gravity_force);
 		  }
-		  
+
 
 		  if (is_key_down(key_right))
 		  {
-			  sprites[ship_sprite].translate(+ship_speed,0);
-			  
-			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3])) 
+			  sprites[ship_sprite].translate(+ship_speed, 0);
+
+			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 3]))
 			  {
 				  sprites[ship_sprite].translate(-ship_speed, 0);
 			  }
 		  }
-		  
+
 		  if (is_key_down(key_left))
 		  {
 			  sprites[ship_sprite].translate(-ship_speed, 0);
-			  
-			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 2])) 
+
+			  if (sprites[ship_sprite].collides_with(sprites[first_border_sprite + 2]))
 			  {
-			    sprites[ship_sprite].translate(+ship_speed, 0);
+				  sprites[ship_sprite].translate(+ship_speed, 0);
 			  }
 		  }
 
-		  if (ship_ypos > -2)
+		  if (ship_position.y > -2)
 		  {
 			  hight_limit = true;
 		  }
@@ -675,14 +678,14 @@ namespace octet {
 	
 	
     // called every frame to move things
-    void simulate() {
-      if (game_over) {
-        return;
-      }
+	void simulate() {
+		if (game_over) {
+			return;
+		}
 
-	  //Returns the position of the space ship
-	  ship_xpos = sprites[ship_sprite].get_pos().x();
-	  ship_ypos = sprites[ship_sprite].get_pos().y();
+		//Returns the position of the space ship
+		ship_position.x = sprites[ship_sprite].get_pos().x();
+		ship_position.y = sprites[ship_sprite].get_pos().y();
 
 	  gravity();
 
