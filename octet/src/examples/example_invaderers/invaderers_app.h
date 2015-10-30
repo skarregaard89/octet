@@ -151,6 +151,7 @@ namespace octet {
       return enabled;
     }
 	
+	//Makes it possible to set the alpha variable outside this class
 	void set_alpha(bool newAlpha){
 		alpha = newAlpha;
 	}

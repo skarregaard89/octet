@@ -11,7 +11,9 @@
 - Collission detection on the bottom border
 - Invaders formation is randomly selected from a series of csv files that includes the 
 formations (current maximum invaders is 50)
-- Game is now over when all invaders in the formation is dead
+- Game is now over when all invaders in the random formation is 'dead'
+
+
 
 ----------IN INVADERS_APP.H----------
 
@@ -47,4 +49,24 @@ simulate()" function in the "invaders_app" class. It is called to get both the x
 position of the spaceship each frame.
 
 
- 
+
+
+>>>>Jumping and gravity physics<<<<<
+
+
+
+
+>>>>Spawning invaders<<<<<
+
+
+
+
+
+----------IN INVADERS_APP.H----------
+
+>>>>Making stuff red<<<<< 
+
+
+
+
+>>>>Sprite (Invaders) Alpha<<<<< 
