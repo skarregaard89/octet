@@ -44,7 +44,7 @@ namespace octet { namespace shaders {
       const char fragment_shader[] = SHADER_STR(
         varying vec2 uv_;
         uniform sampler2D sampler;
-		uniform float alpha;
+		uniform bool alpha;
         void main() 
 		{ 
 			vec4 cTex = texture2D(sampler, uv_);
@@ -64,7 +64,7 @@ namespace octet { namespace shaders {
 	  alphaIndex_ = glGetUniformLocation(program(), "alpha");
     }
 
-    void render(const mat4t &modelToProjection, int sampler, int alpha) {
+    void render(const mat4t &modelToProjection, int sampler, bool alpha) {
       // tell openGL to use the program
       shader::render();
 

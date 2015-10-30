@@ -17,10 +17,7 @@
 //   Audio
 //
 #include <iostream>
-#include <string>
-#include <fstream>
 #include <sstream>
-#include <vector>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
@@ -43,7 +40,7 @@ namespace octet {
     bool enabled;
 
 	//Variable containing alpha value
-	float alpha = 1;
+	bool alpha = true;
   
   
  public:
@@ -122,8 +119,6 @@ namespace octet {
       modelToWorld.translate(x, y, 0);
     }
 
-
-
     // position the object relative to another.
     void set_relative(sprite &rhs, float x, float y) {
       modelToWorld = rhs.modelToWorld;
@@ -155,12 +150,8 @@ namespace octet {
     bool &is_enabled() {
       return enabled;
     }
-
-	float& get_alpha() {
-		return alpha;
-	}
 	
-	void set_alpha(float newAlpha){
+	void set_alpha(bool newAlpha){
 		alpha = newAlpha;
 	}
 
@@ -176,12 +167,10 @@ namespace octet {
 	
     enum {
       num_sound_sources = 8,
-      num_rows = 5,
-      num_cols = 10,
       num_missiles = 2,
       num_bombs = 2,
       num_borders = 4,
-      num_invaderers = num_rows * num_cols,
+      num_invaderers = 50,
 
       // sprite definitions
       ship_sprite = 0,
@@ -208,7 +197,7 @@ namespace octet {
     int bombs_disabled;
 
     // accounting for bad guys
-    int live_invaderers;
+	int numberOfInvadersSpawned; //Counting when spawning invader from CSV file
     int num_lives;
 
     // game state
@@ -218,7 +207,7 @@ namespace octet {
     // speed of enemy
     float invader_velocity;
 
-	//Physics
+	//Physics (gravity)
 	float gravity_force;
 	bool hight_limit;
 
@@ -253,11 +242,12 @@ namespace octet {
       alSourcei(source, AL_BUFFER, bang);
       alSourcePlay(source);
 
-      live_invaderers--;
+	  numberOfInvadersSpawned--;
       score++;
-      if (live_invaderers == 4) {
+	  if (numberOfInvadersSpawned == 4) {
         invader_velocity *= 4;
-      } else if (live_invaderers == 0) {
+	  }
+	  else if (numberOfInvadersSpawned == 0) {
         game_over = true;
         sprites[game_over_sprite].translate(-20, 0);
       }
@@ -528,7 +518,7 @@ namespace octet {
 	  //Keeping track of the invaders
 	  int row = 0;
 	  int col = 0;
-	  int spriteNum = 0; 
+	  numberOfInvadersSpawned = 0;
 	  for (csvVector::iterator i = csvData.begin(); i != csvData.end(); ++i)
 	  {
 		  for (std::vector<std::string>::iterator j = i->begin(); j != i->end(); ++j)
@@ -537,11 +527,15 @@ namespace octet {
 			  if (*j == "1")
 			  {
 				  GLuint invaderer = resource_dict::get_texture_handle(GL_RGBA, "assets/invaderers/invaderer.gif");
-				  assert(first_invaderer_sprite + spriteNum);
-				  sprites[first_invaderer_sprite + spriteNum].init(invaderer, ((float)col - 1 * 5.0f) * 0.5f, 2.50f - ((float)row * 0.5f), 0.25f, 0.25f);
-				  spriteNum++;
+				  assert(first_invaderer_sprite + numberOfInvadersSpawned);
+				  sprites[first_invaderer_sprite + numberOfInvadersSpawned].init(invaderer, ((float)col - 1 * 5.0f) * 0.5f, 2.50f - ((float)row * 0.5f), 0.25f, 0.25f);
+				  numberOfInvadersSpawned++;
+
+				  if (numberOfInvadersSpawned >= num_invaderers)
+					  break;
 			  }
-			  col++;
+
+			col++;
 		  }
 		  col = 0;
 		  row++;
@@ -554,19 +548,19 @@ namespace octet {
 	{
 		int minNum = 1;
 		int maxNum = 10;
-		srand(time(NULL));
+		srand(time(NULL)); 
 		int isVisibleNum = (rand() % (maxNum - minNum)) + minNum;
 		std::cout<<isVisibleNum;
 
 		if (isVisibleNum <5)
 		{
 			for (int i = 0; i < last_invaderer_sprite; i++)
-				sprites[first_invaderer_sprite + i].set_alpha(0.0f);
+				sprites[first_invaderer_sprite + i].set_alpha(false);
 		}
 		else 
 		{
 			for (int i = 0; i < last_invaderer_sprite; i++)
-				sprites[first_invaderer_sprite + i].set_alpha(1.0f);
+				sprites[first_invaderer_sprite + i].set_alpha(true);
 		}
 			
 	
@@ -672,7 +666,6 @@ namespace octet {
       missiles_disabled = 0;
       bombs_disabled = 50;
       invader_velocity = 0.01f;
-      live_invaderers = num_invaderers;
       num_lives = 3;
       game_over = false;
       score = 0;
@@ -689,9 +682,6 @@ namespace octet {
 	  //Returns the position of the space ship
 	  ship_xpos = sprites[ship_sprite].get_pos().x();
 	  ship_ypos = sprites[ship_sprite].get_pos().y();
-
-	 // printf("%f\n", ship_ypos);
-	  //printf("%d\n", hight_limit);
 
 	  gravity();
 
