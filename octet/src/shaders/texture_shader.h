@@ -50,7 +50,6 @@ namespace octet { namespace shaders {
 			vec4 cTex = texture2D(sampler, uv_);
 			vec4 color = vec4(1,0,0,alpha);
 			gl_FragColor = cTex * color;
-			//gl_FragColor = vec4(alpha, alpha, alpha, 1);
 		}
       );
     
@@ -72,9 +71,6 @@ namespace octet { namespace shaders {
       glUniform1i(samplerIndex_, sampler);
       glUniformMatrix4fv(modelToProjectionIndex_, 1, GL_FALSE, modelToProjection.get());
 	  glUniform1f(alphaIndex_, alpha);
-    
-	  
-
 	}
   };
 }}

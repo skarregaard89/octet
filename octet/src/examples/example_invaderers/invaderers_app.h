@@ -248,8 +248,17 @@ namespace octet {
 
 	  numberOfInvadersSpawned--;
       score++;
-	  if (numberOfInvadersSpawned == 4) {
-        invader_velocity *= 4;
+	  if (numberOfInvadersSpawned == 8) {
+        invader_velocity *= 2;
+	  }
+	  else if (numberOfInvadersSpawned == 4) {
+		  invader_velocity *= 2;
+	  }
+	  else if (numberOfInvadersSpawned == 2) {
+		  invader_velocity *= 2;
+	  }
+	  else if (numberOfInvadersSpawned == 1) {
+		  invader_velocity *= 2;
 	  }
 	  else if (numberOfInvadersSpawned == 0) {
         game_over = true;
@@ -287,6 +296,7 @@ namespace octet {
 	{
 	  const float jump_force = 0.1f;
       const float ship_speed = 0.05f;
+	  bool key_up_pushed = false;
 
 	  // left, right and up arrows
 	  if (is_key_down(key_left) && !is_key_down(key_up)) 
@@ -317,7 +327,7 @@ namespace octet {
 			  sprites[ship_sprite].translate(0, +jump_force - gravity_force);
 		  }
 
-
+		  
 		  if (is_key_down(key_right))
 		  {
 			  sprites[ship_sprite].translate(+ship_speed, 0);
@@ -342,7 +352,6 @@ namespace octet {
 		  {
 			  hight_limit = true;
 		  }
-
 	  }
     }
 
@@ -455,12 +464,22 @@ namespace octet {
 		}
 	}
 
-	// check if any invaders hit the sides.
-	bool invaders_collide(sprite &border) {
-		for (int j = 0; j != num_invaderers; ++j) {
+	// check if any invaders hit the sides or the bottom
+	bool invaders_collide(sprite &border) 
+	{
+		for (int j = 0; j != num_invaderers; ++j) 
+		{
 			sprite &invaderer = sprites[first_invaderer_sprite + j];
-			if (invaderer.is_enabled() && invaderer.collides_with(border)) {
+			if (invaderer.is_enabled() && invaderer.collides_with(border)) 
+			{
 				return true;
+			}
+
+			//Ends the game when invaders reach the bottom
+			if (invaderer.is_enabled() && invaderer.collides_with(sprites[first_border_sprite]))
+			{
+				game_over = true;
+				sprites[game_over_sprite].translate(-20, 0);
 			}
 		}
 		return false;
@@ -503,7 +522,7 @@ namespace octet {
 		int maxCSVNum = 6;
 		srand(time(NULL));
 		int ranNum = (rand() % (maxCSVNum - minCSVNum)) + minCSVNum;
-		cout << ranNum;
+
 		std::string ranString = IntToString(ranNum);
 
 		// Trouble shooting of path done by Jean-Pascal Evette, Thanks
