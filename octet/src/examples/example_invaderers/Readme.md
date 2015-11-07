@@ -86,7 +86,7 @@ starts by calculating a 'random' number between 1 and 6. The 'random' number is 
 converted into a string, using the "std::string IntToString(int number)" function. The 
 converting is done, so the 'random' number can be used as a part of a string, when the CSV-
 file are looked up. 
-![Image ReadCSV](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvaderFormation.png)
+![Image InvaderSpawning](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvaderFormation.png)
 *The invaders formations is randomly chosen between the CSV files on each start*
 
 When the 'random' chosen CSV-file has been loaded, then the "void readCSV(std::istream 
