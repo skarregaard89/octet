@@ -33,6 +33,7 @@ The "set_alpha" function is called in the "void invisibleInvaders()" function, w
 inside the invaders_app class. The "invisbleInvaders" function calculates a 'random' number 
 between 1 and 10. Depending on the calculated number, it sets all invaders' alpha to either
 true or flase (visible or invisible)
+![Image invisibleInvaders function] function](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/invisibleInvaders.png)
 
 The "invisibleInvaders" function is finally called inside the game loop "void 
 simulate()" function in the "invaders_app" class. This means that a 'random' number will be
