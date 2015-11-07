@@ -27,7 +27,8 @@ The value is "true", meaning that all textures are visible at this stage.
 
 Further down in the sprite class, a simple set_alpha(bool newAlpha) function has been added, 
 so it is possible to set a new alpha value outside the sprite class.
-![Image SetAlph function](https://github.com/skarregaard89/octet/edit/master/octet/src/examples/example_invaderers/yaktocat.png)
+![Image SetAlph function](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/SetAlpha.png)
+
 The "set_alpha" function is called in the "void invisibleInvaders()" function, which is 
 inside the invaders_app class. The "invisbleInvaders" function calculates a 'random' number 
 between 1 and 10. Depending on the calculated number, it sets all invaders' alpha to either
