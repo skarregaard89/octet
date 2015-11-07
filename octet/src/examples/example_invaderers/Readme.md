@@ -86,6 +86,9 @@ starts by calculating a 'random' number between 1 and 6. The 'random' number is 
 converted into a string, using the "std::string IntToString(int number)" function. The 
 converting is done, so the 'random' number can be used as a part of a string, when the CSV-
 file are looked up. 
+![Image ReadCSV](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvaderFormation.png)
+*The invaders formations is randomly chosen between the CSV files on each start*
+
 When the 'random' chosen CSV-file has been loaded, then the "void readCSV(std::istream 
 &input, std::vector < std::vector <std::string> > &output)" function is used to read the
 file and pass data into the "csvVector csvData" variable, by using pass by reference.
@@ -103,11 +106,14 @@ have been assigned invader sprites. By counting the spawned sprites/invaders it 
 ensured that the range is not exceeded. Furthrmore the "numberOfInvadersSpawned" variable is
 used to figure out when all invaders have been killed and the game should end. This happens 
 in the game loop.
+![Image ReadCSV](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/ReadCSV.png)
+*The function reading the CSV file*
+![Image CSVOutput](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/OutputCSV.png)
+*The function that uses the CSV file to output the invaders formation*
 
 The whole csv-file function mentioned above is called in the "void app_init()" function, 
 which is called once when OpenGL is initialized. The "void app_init()" function is the 
 function responsible for drawing the game elements. 
-
 
 
 **Invaders moves faster**
