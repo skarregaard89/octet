@@ -1,6 +1,6 @@
 INVADERS HACK BY MARTIN SKARREGAARD
 ---
-*Link to demo video*
+*Link to demo video: https://youtu.be/k-zAxgGuetc*
 ####OVERVIEW OVER CHANGES
 - Color of all sprites have been changed from white to red
 - Invaders turns invisible at random intervals (adding difficulty)
@@ -15,7 +15,6 @@ formations (current maximum invaders is 50)
 
 
 ####IN INVADERS_APP.H
-
 
 **Sprite (Invaders) Alpha**
 In the "sprite" class I added a "bool alpha" to control the alpha value of the sprites. 
