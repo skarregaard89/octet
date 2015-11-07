@@ -44,7 +44,7 @@ in that specific frame.
 ![Image invaders become invisible](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvadersGoInvisible.png)
 *Screen captures of when the invaders are visible and invisible*
 
-######Getting the spaceship position
+**Getting the spaceship position**
 A "vec2 get_pos()" function was created in the sprite class. This function returns the
 position of an object/sprite. The "get_pos()" function is called inside the game loop "void 
 simulate()" function in the "invaders_app" class. It is called to get both the x and y 
@@ -53,14 +53,14 @@ structure.
 ![Image Get position code](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/getPosition.png)
 *The three bits of code that is responsible for geting the ships position*
 
-######Invaders collides with the bottom border
+**Invaders collides with the bottom border**
 In the "invaders-app" class' "bool invaders_collide(sprite &border)" function I have added
 an if statement, which checks if any of the invaders collides with the bottom border. If
 this happens, the game ends.
 
 
 
-######Gravity and jumping
+**Gravity and jumping**
 In the "invaders_app" class I have created the "void gravity()" function. This function
 continually translates the ship negatively in the y-position (pulling the ship down). The 
 function includes an if statement that detects the collision with the lower border and 
@@ -74,7 +74,7 @@ ship collides with the lower border again.
 
 
 
-######Spawning invaders
+**Spawning invaders**
 To spawn the invaders I created 6 different CSV-files with different spawning formations for
 the invaders. When the game starts is 'randomly' chooses one of the CSV-files to use. This  
 all happens in the "int outputCSV()" function in the "invaders_app" class. The function 
@@ -106,7 +106,7 @@ function responsible for drawing the game elements.
 
 
 
-######Invaders moves faster
+**Invaders moves faster**
 In the "invaders-app" class' "void on_hit_invaderer()" function I have added some extra else
 if statements. These statements check how many invaders there are left and the speed of the
 invaders are multiplied by two every time.
@@ -115,7 +115,7 @@ invaders are multiplied by two every time.
 ####IN INVADERS_APP.H
 
 
-######Making stuff red 
+**Making stuff red**
 To make all sprites red I have simply created the "vec4 color = vec4(1,0,0,alpha)" variable.
 The red value of this vector is set to 1, while the green and blue value have been set to
 0. "color" is then multiplied with the texture variable/vector to create the final shader.
@@ -123,7 +123,7 @@ In this case it results in everything being red.
 
 
 
-######prite (Invaders) Alpha
+**Sprite (Invaders) Alpha**
 To be able to change the alpha value for the sprites (in this case the invaders), a new 
 uniform variable had to be created in the fragment shader. Including the uniform in the
 "void render(const mat4t &modelToProjection, int sampler, bool alpha)", makes it possible 
