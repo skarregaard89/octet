@@ -57,8 +57,8 @@ structure.
 In the "invaders-app" class' "bool invaders_collide(sprite &border)" function I have added
 an if statement, which checks if any of the invaders collides with the bottom border. If
 this happens, the game ends.
-
-
+![Image Game end when invaders hits bottom](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvaderCollidesWithBottom.png)
+*If statement which checks if the invaders collides with the bottom border*
 
 **Gravity and jumping**
 In the "invaders_app" class I have created the "void gravity()" function. This function
@@ -66,13 +66,17 @@ continually translates the ship negatively in the y-position (pulling the ship d
 function includes an if statement that detects the collision with the lower border and 
 ensures that the ship cannot go through the border. Also, the if statement sets the variable 
 "height_limit" to false. 
+![Image Gravity function](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/Gravity.png)
+*Gravity function*
 As long as the "height_limit" is false it enables jumping in the "void move_ship()" function.
 This means that whenever the up key is pressed, the ship is moved positively in the 
 y-position by using "jump_force" and neutralizing the gravity. When the ship reaches a 
 y-position at "2", then the positive translation in the y-direction is disabled, until the 
 ship collides with the lower border again.
-
-
+![Image Jump statement](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/JumpStatement.png)
+*If statement within move_ship function*
+![Image Ship jumping](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/Jumping.png)
+*Screen Capture of the ship jumping*
 
 **Spawning invaders**
 To spawn the invaders I created 6 different CSV-files with different spawning formations for
