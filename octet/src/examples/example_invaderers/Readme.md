@@ -1,5 +1,5 @@
 INVADERS HACK BY MARTIN SKARREGAARD
--
+---
 
 ####OVERVIEW OVER CHANGES
 - Color of all sprites have been changed from white to red
@@ -17,7 +17,7 @@ formations (current maximum invaders is 50)
 ####IN INVADERS_APP.H
 
 
-######Sprite (Invaders) Alpha
+**Sprite (Invaders) Alpha**
 In the "sprite" class I added a "bool alpha" to control the alpha value of the sprites. 
 I have specifically used it for controlling the alpha of of the invader sprites.
 
