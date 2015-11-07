@@ -28,20 +28,21 @@ The value is "true", meaning that all textures are visible at this stage.
 Further down in the sprite class, a simple set_alpha(bool newAlpha) function has been added, 
 so it is possible to set a new alpha value outside the sprite class.
 ![Image SetAlph function](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/SetAlpha.png)
-*image_caption*
+*The function that enable changes of the alpha value*
 
 The "set_alpha" function is called in the "void invisibleInvaders()" function, which is 
 inside the invaders_app class. The "invisbleInvaders" function calculates a 'random' number 
 between 1 and 10. Depending on the calculated number, it sets all invaders' alpha to either
 true or flase (visible or invisible)
 ![Image invisibleInvaders function](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/invisibleInvaders.png)
+*The function that calculates a "random" number to decide if the invaders should be visible or not*
 
 The "invisibleInvaders" function is finally called inside the game loop "void 
 simulate()" function in the "invaders_app" class. This means that a 'random' number will be
 calculated at each frame, which decides whether the invaders should be visible or invisible 
 in that specific frame. 
 ![Image invaders become invisible](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/InvadersGoInvisible.png)
-
+*Screen captures of when the invaders are visible and invisible*
 
 ######Getting the spaceship position
 A "vec2 get_pos()" function was created in the sprite class. This function returns the
@@ -50,7 +51,7 @@ simulate()" function in the "invaders_app" class. It is called to get both the x
 position of the spaceship each frame. The two positions are stored in a "ship_position" 
 structure. 
 ![Image Get position code](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/getPosition.png)
-
+*The three bits of code that is responsible for geting the ships position*
 
 ######Invaders collides with the bottom border
 In the "invaders-app" class' "bool invaders_collide(sprite &border)" function I have added
