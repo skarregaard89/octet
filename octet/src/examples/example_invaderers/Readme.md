@@ -120,7 +120,8 @@ function responsible for drawing the game elements.
 In the "invaders-app" class' "void on_hit_invaderer()" function I have added some extra else
 if statements. These statements check how many invaders there are left and the speed of the
 invaders are multiplied by two every time.
-
+![Image Faster Invaders](https://github.com/skarregaard89/octet/blob/master/octet/src/examples/example_invaderers/Images%20for%20Readme/FasterInvaders.png)
+*The function that increases the invaders movement speed when there is less than 9 invaders left*
 
 ####IN INVADERS_APP.H
 
@@ -130,7 +131,6 @@ To make all sprites red I have simply created the "vec4 color = vec4(1,0,0,alpha
 The red value of this vector is set to 1, while the green and blue value have been set to
 0. "color" is then multiplied with the texture variable/vector to create the final shader.
 In this case it results in everything being red. 
-
 
 
 **Sprite (Invaders) Alpha**
