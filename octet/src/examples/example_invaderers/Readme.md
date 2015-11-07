@@ -2,7 +2,6 @@ INVADERS HACK BY MARTIN SKARREGAARD
 -
 
 ####OVERVIEW OVER CHANGES
-
 - Color of all sprites have been changed from white to red
 - Invaders turns invisible at random intervals (adding difficulty)
 - Jump function added for the spaceship (no real purpose at the moment)
@@ -16,6 +15,7 @@ formations (current maximum invaders is 50)
 
 
 ####IN INVADERS_APP.H
+
 
 ######Sprite (Invaders) Alpha
 In the "sprite" class I added a "bool alpha" to control the alpha value of the sprites. 
@@ -38,6 +38,7 @@ calculated at each frame, which decides whether the invaders should be visible o
 in that specific frame. 
 
 
+
 ######Getting the spaceship position
 A "vec2 get_pos()" function was created in the sprite class. This function returns the
 position of an object/sprite. The "get_pos()" function is called inside the game loop "void 
@@ -46,10 +47,12 @@ position of the spaceship each frame. The two positions are stored in a "ship_po
 structure. 
 
 
+
 ######Invaders collides with the bottom border<<<<<
 In the "invaders-app" class' "bool invaders_collide(sprite &border)" function I have added
 an if statement, which checks if any of the invaders collides with the bottom border. If
 this happens, the game ends.
+
 
 
 ######Gravity and jumping
@@ -63,6 +66,7 @@ This means that whenever the up key is pressed, the ship is moved positively in 
 y-position by using "jump_force" and neutralizing the gravity. When the ship reaches a 
 y-position at "2", then the positive translation in the y-direction is disabled, until the 
 ship collides with the lower border again.
+
 
 
 ######Spawning invaders
@@ -96,6 +100,7 @@ which is called once when OpenGL is initialized. The "void app_init()" function 
 function responsible for drawing the game elements. 
 
 
+
 ######Invaders moves faster
 In the "invaders-app" class' "void on_hit_invaderer()" function I have added some extra else
 if statements. These statements check how many invaders there are left and the speed of the
@@ -104,11 +109,13 @@ invaders are multiplied by two every time.
 
 ####IN INVADERS_APP.H
 
+
 ######Making stuff red 
 To make all sprites red I have simply created the "vec4 color = vec4(1,0,0,alpha)" variable.
 The red value of this vector is set to 1, while the green and blue value have been set to
 0. "color" is then multiplied with the texture variable/vector to create the final shader.
 In this case it results in everything being red. 
+
 
 
 ######prite (Invaders) Alpha
